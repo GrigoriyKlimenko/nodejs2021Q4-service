@@ -1,4 +1,4 @@
-const { getAllUsers, getOneUser } = require('./user.service');
+const { getAllUsers, getOneUser, addUser, deleteUser, updateUser } = require('./user.service');
 
 const getUsersSchema = {
   schema: {
@@ -16,7 +16,7 @@ const getUsersSchema = {
       }
     }
   },
-  handler: getAllUsers
+  handler: getAllUsers,
 }
 
 const getOneUserSchema = {
@@ -32,10 +32,75 @@ const getOneUserSchema = {
       }
     }
   },
-  handler: getOneUser
+  handler: getOneUser,
+}
+
+const addUserSchema = {
+  schema: {
+    body: {
+      type: 'object',
+      required: ['name', 'login', 'password'],
+      properties: {
+        name: {type:'string'},
+        login: {type:'string'},
+        password: {type:'string'},
+      }
+    },
+    response: {
+      201: {
+        type: 'object',
+          properties: {
+            id: {type: 'string'},
+            name: {type: 'string'},
+            login: {type: 'string'},
+          }
+      }
+    }
+  },
+  handler: addUser,
+}
+
+const deleteUserSchema = {
+  schema: {
+    response: {
+      204: {
+        type: "object",
+        description: 'Success'
+      },
+    },
+  },
+  handler: deleteUser,
+}
+
+const updateUserSchema = {
+  schema: {
+    body: {
+      type: 'object',
+      required: ['name', 'login', 'password'],
+      properties: {
+        name: {type:'string'},
+        login: {type:'string'},
+        password: {type:'string'},
+      }
+    },
+    response: {
+      200: {
+        type: 'object',
+          properties: {
+            id: {type: 'string'},
+            name: {type: 'string'},
+            login: {type: 'string'},
+          }
+      }
+    }
+  },
+  handler: updateUser,
 }
 
 module.exports = {
   getUsersSchema,
-  getOneUserSchema
+  getOneUserSchema,
+  addUserSchema,
+  deleteUserSchema,
+  updateUserSchema,
 };
