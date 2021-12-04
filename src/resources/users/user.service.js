@@ -1,5 +1,5 @@
-let usersRepo = require('./user.memory.repository');
 const uuid = require('uuid');
+let usersRepo = require('./user.memory.repository');
 
 const getAllUsers = (req, res) => {
     res.send(usersRepo);
@@ -7,7 +7,7 @@ const getAllUsers = (req, res) => {
 
 const getOneUser = (req, res) => {
     const { userId } = req.params;
-    let user = usersRepo.find((user) => user.id === userId);
+    const user = usersRepo.find((userItem) => userItem.id === userId);
     res.send(user);
 };
 
@@ -32,7 +32,6 @@ const deleteUser = (req, res) => {
 
 const updateUser = (req, res) => {
     const { userId } = req.params;
-    console.log('>>>>>>>>>>>>>>>', userId);
     const { name, login, password } = req.body;
     const updatedUser = {
         id: userId,

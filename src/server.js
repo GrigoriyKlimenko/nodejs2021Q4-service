@@ -7,7 +7,7 @@ const start = async () => {
       console.log(`App is running on http://localhost:${PORT}`)
     })
   } catch (error) {
-
+    console.error(error);
   }
 };
 
