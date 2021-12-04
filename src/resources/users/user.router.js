@@ -1,14 +1,9 @@
-const User = require('./user.model');
+const { getUsersSchema, getOneUserSchema }= require('./user.model');
 const usersService = require('./user.service');
 
 function usersRouter (fastify, options, done) {
-  fastify.get('/users', (res, req) => {
-    req.send('users')
-  })
-  fastify.get('/users/:userId', (res, req) => {
-    const { userId } = req.params;
-    req.send('user by id')
-  })
+  fastify.get('/users', getUsersSchema)
+  fastify.get('/users/:userId', getOneUserSchema)
   fastify.post('/users', (res, req) => {
     req.send()
   })

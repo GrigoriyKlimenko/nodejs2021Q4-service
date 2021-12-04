@@ -1,22 +1,41 @@
-const uuid = require('uuid');
+const { getAllUsers, getOneUser } = require('./user.service');
 
-class User {
-  constructor({
-    id = uuid(),
-    name = 'USER',
-    login = 'user',
-    password = 'P@55w0rd'
-  } = {}) {
-    this.id = id;
-    this.name = name;
-    this.login = login;
-    this.password = password;
-  }
-
-  static toResponse(user) {
-    const { id, name, login } = user;
-    return { id, name, login };
-  }
+const getUsersSchema = {
+  schema: {
+    response: {
+      200: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: {type: 'string'},
+            name: {type: 'string'},
+            login: {type: 'string'},
+          }
+        }
+      }
+    }
+  },
+  handler: getAllUsers
 }
 
-module.exports = User;
+const getOneUserSchema = {
+  schema: {
+    response: {
+      200: {
+        type: 'object',
+          properties: {
+            id: {type: 'string'},
+            name: {type: 'string'},
+            login: {type: 'string'},
+          }
+      }
+    }
+  },
+  handler: getOneUser
+}
+
+module.exports = {
+  getUsersSchema,
+  getOneUserSchema
+};
