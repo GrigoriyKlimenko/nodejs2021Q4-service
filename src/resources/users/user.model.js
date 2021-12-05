@@ -1,22 +1,106 @@
-const uuid = require('uuid');
+const { getAllUsers, getOneUser, addUser, deleteUser, updateUser } = require('./user.service');
 
-class User {
-  constructor({
-    id = uuid(),
-    name = 'USER',
-    login = 'user',
-    password = 'P@55w0rd'
-  } = {}) {
-    this.id = id;
-    this.name = name;
-    this.login = login;
-    this.password = password;
-  }
-
-  static toResponse(user) {
-    const { id, name, login } = user;
-    return { id, name, login };
-  }
+const getUsersSchema = {
+  schema: {
+    response: {
+      200: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: {type: 'string'},
+            name: {type: 'string'},
+            login: {type: 'string'},
+          }
+        }
+      }
+    }
+  },
+  handler: getAllUsers,
 }
 
-module.exports = User;
+const getOneUserSchema = {
+  schema: {
+    response: {
+      200: {
+        type: 'object',
+          properties: {
+            id: {type: 'string'},
+            name: {type: 'string'},
+            login: {type: 'string'},
+          }
+      }
+    }
+  },
+  handler: getOneUser,
+}
+
+const addUserSchema = {
+  schema: {
+    body: {
+      type: 'object',
+      required: ['name', 'login', 'password'],
+      properties: {
+        name: {type:'string'},
+        login: {type:'string'},
+        password: {type:'string'},
+      }
+    },
+    response: {
+      201: {
+        type: 'object',
+          properties: {
+            id: {type: 'string'},
+            name: {type: 'string'},
+            login: {type: 'string'},
+          }
+      }
+    }
+  },
+  handler: addUser,
+}
+
+const deleteUserSchema = {
+  schema: {
+    response: {
+      204: {
+        type: "object",
+        description: 'Success'
+      },
+    },
+  },
+  handler: deleteUser,
+}
+
+const updateUserSchema = {
+  schema: {
+    body: {
+      type: 'object',
+      required: ['name', 'login', 'password'],
+      properties: {
+        name: {type:'string'},
+        login: {type:'string'},
+        password: {type:'string'},
+      }
+    },
+    response: {
+      200: {
+        type: 'object',
+          properties: {
+            id: {type: 'string'},
+            name: {type: 'string'},
+            login: {type: 'string'},
+          }
+      }
+    }
+  },
+  handler: updateUser,
+}
+
+module.exports = {
+  getUsersSchema,
+  getOneUserSchema,
+  addUserSchema,
+  deleteUserSchema,
+  updateUserSchema,
+};
