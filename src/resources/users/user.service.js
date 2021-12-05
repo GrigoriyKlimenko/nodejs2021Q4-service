@@ -1,4 +1,5 @@
 const uuid = require('uuid');
+const { resetTaskExecutor } = require('../tasks/tasks.service');
 let usersRepo = require('./user.memory.repository');
 
 const getAllUsers = (req, res) => {
@@ -27,6 +28,7 @@ const addUser = (req, res) => {
 const deleteUser = (req, res) => {
     const { userId } = req.params;
     usersRepo = usersRepo.filter((user) => user.id !== userId);
+    resetTaskExecutor(userId);
     res.code(204).send();
 };
 

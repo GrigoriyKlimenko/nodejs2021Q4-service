@@ -1,4 +1,5 @@
 const uuid = require('uuid');
+const { deleteTaskByBoard } = require('../tasks/tasks.service');
 let boardsRepo = require('./boards.memory.repository');
 
 const getAllBoards = (req, res) => {
@@ -30,7 +31,7 @@ const addBoard = (req, res) => {
 const deleteBoard = (req, res) => {
     const { boardId } = req.params;
     boardsRepo = boardsRepo.filter((board) => board.id !== boardId);
-    console.log('>>>>>>>', boardsRepo);
+    deleteTaskByBoard(boardId);
     res.code(204).send();
 };
 
