@@ -1,4 +1,4 @@
-const { getAllTasks, getOneTask, addTask, deleteTask, updateTask } = require('./tasks.service');
+import { getAllTasks, getOneTask, addTask, deleteTask, updateTask } from './tasks.service';
 
 const getTasksSchema = {
   schema: {
@@ -119,7 +119,7 @@ const updateTaskSchema = {
   handler: updateTask,
 }
 
-module.exports = {
+export {
   getTasksSchema,
   getOneTaskSchema,
   addTaskSchema,

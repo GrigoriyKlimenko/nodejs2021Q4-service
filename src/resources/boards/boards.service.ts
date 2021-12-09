@@ -1,5 +1,5 @@
-const uuid = require('uuid');
-const { deleteTaskByBoard } = require('../tasks/tasks.service');
+import uuid = require('uuid');
+import { deleteTaskByBoard } from '../tasks/tasks.service';
 let boardsRepo = require('./boards.memory.repository');
 
 const getAllBoards = (req, res) => {
@@ -48,7 +48,7 @@ const updateBoard = (req, res) => {
     res.code(200).send(updatedBoard);
 };
 
-module.exports = {
+export {
     getAllBoards,
     getOneBoard,
     addBoard,

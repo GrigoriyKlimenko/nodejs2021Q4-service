@@ -1,4 +1,4 @@
-const { getAllUsers, getOneUser, addUser, deleteUser, updateUser } = require('./user.service');
+import { getAllUsers, getOneUser, addUser, deleteUser, updateUser } from './user.service';
 
 const getUsersSchema = {
   schema: {
@@ -97,7 +97,7 @@ const updateUserSchema = {
   handler: updateUser,
 }
 
-module.exports = {
+export {
   getUsersSchema,
   getOneUserSchema,
   addUserSchema,

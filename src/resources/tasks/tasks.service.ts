@@ -1,13 +1,21 @@
-const uuid = require('uuid');
+import uuid from 'uuid';
 let tasksRepo = require('./tasks.memory.repository');
-
+interface Task {
+        id: 'string';
+        title: 'string';
+        order: 'number';
+        description: 'string';
+        userId: 'string';
+        boardId: 'string'; 
+        columnId: 'string';
+}
 const getAllTasks = (req, res) => {
     res.send(tasksRepo);
 };
 
 const getOneTask = (req, res) => {
     const { taskId } = req.params;
-    const task = tasksRepo.find(taskItem => taskItem.id === taskId);
+    const task = tasksRepo.find((taskItem: Task) => taskItem.id === taskId);
     if (!task) {
         res.code(404).send('no such task');
     } else {
@@ -34,7 +42,7 @@ const addTask = (req, res) => {
 
 const deleteTask = (req, res) => {
     const { taskId } = req.params;
-    tasksRepo = tasksRepo.filter(task => task.id !== taskId);
+    tasksRepo = tasksRepo.filter((task: Task) => task.id !== taskId);
     res.code(204).send();
 };
 
@@ -51,7 +59,7 @@ const updateTask = (req, res) => {
         columnId
     }
     
-    tasksRepo = tasksRepo.map( task => task.id === taskId ? updatedTask : task);
+    tasksRepo = tasksRepo.map( (task: Task) => task.id === taskId ? updatedTask : task);
     res.code(200).send(updatedTask);
 };
 
@@ -64,10 +72,10 @@ const resetTaskExecutor = (userId) => {
 }
 
 const deleteTaskByBoard = (boardId) => {
-    tasksRepo = tasksRepo.filter(task => task.boardId !== boardId);
+    tasksRepo = tasksRepo.filter( (task: Task) => task.boardId !== boardId);
 }
 
-module.exports = {
+export {
     getAllTasks,
     getOneTask,
     addTask,

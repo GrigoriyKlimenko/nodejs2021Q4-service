@@ -1,10 +1,10 @@
-const { 
+import { 
   getTasksSchema, 
   getOneTaskSchema, 
   addTaskSchema, 
   deleteTaskSchema, 
   updateTaskSchema, 
-} = require('./tasks.model');
+} from './tasks.model'
 
 function tasksRouter (fastify, options, done) {
   fastify.get('/boards/:boardId/tasks', getTasksSchema);
@@ -15,4 +15,4 @@ function tasksRouter (fastify, options, done) {
   done();
 }
 
-module.exports = tasksRouter;
+export default tasksRouter

@@ -1,5 +1,5 @@
-const uuid = require('uuid');
-const { resetTaskExecutor } = require('../tasks/tasks.service');
+import uuid from 'uuid';
+import { resetTaskExecutor } from '../tasks/tasks.service';
 let usersRepo = require('./user.memory.repository');
 
 const getAllUsers = (req, res) => {
@@ -46,7 +46,7 @@ const updateUser = (req, res) => {
     res.code(200).send(updatedUser);
 };
 
-module.exports = {
+export {
     getAllUsers,
     getOneUser,
     addUser,

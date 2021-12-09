@@ -1,12 +1,12 @@
-const { 
+import { 
   getUsersSchema, 
   getOneUserSchema, 
   addUserSchema, 
   deleteUserSchema, 
   updateUserSchema, 
-}= require('./user.model');
+} from './user.model';
 
-function usersRouter (fastify, options, done) {
+function usersRouter (fastify, {}, done) {
   fastify.get('/users', getUsersSchema);
   fastify.get('/users/:userId', getOneUserSchema);
   fastify.post('/users', addUserSchema);
@@ -15,4 +15,4 @@ function usersRouter (fastify, options, done) {
   done();
 }
 
-module.exports = usersRouter;
+export default usersRouter;

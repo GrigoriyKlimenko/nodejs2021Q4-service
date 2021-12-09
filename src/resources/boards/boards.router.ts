@@ -1,10 +1,10 @@
-const { 
+import { 
   getBoardsSchema, 
   getOneBoardSchema, 
   addBoardSchema, 
   deleteBoardSchema, 
   updateBoardSchema, 
-}= require('./boards.model');
+} from './boards.model';
 
 function boardsRouter (fastify, options, done) {
   fastify.get('/boards', getBoardsSchema);
@@ -15,4 +15,4 @@ function boardsRouter (fastify, options, done) {
   done();
 }
 
-module.exports = boardsRouter;
+export default boardsRouter;
