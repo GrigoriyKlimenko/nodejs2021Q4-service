@@ -6,7 +6,7 @@ import {
   updateUserSchema, 
 } from './user.model';
 
-function usersRouter (fastify, {}, done) {
+function usersRouter (fastify, _option, done) {
   fastify.get('/users', getUsersSchema);
   fastify.get('/users/:userId', getOneUserSchema);
   fastify.post('/users', addUserSchema);

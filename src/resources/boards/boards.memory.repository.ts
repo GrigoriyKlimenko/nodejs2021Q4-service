@@ -1,3 +1,9 @@
-const boards = [];
+interface IBoard {
+    id: string;
+    title: string;
+    columns: string[];
+}
 
-module.exports = boards;
+const boards: IBoard[] = [];
+
+export { boards, IBoard};

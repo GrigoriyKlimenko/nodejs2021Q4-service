@@ -1,21 +1,15 @@
 import uuid from 'uuid';
-let tasksRepo = require('./tasks.memory.repository');
-interface Task {
-        id: 'string';
-        title: 'string';
-        order: 'number';
-        description: 'string';
-        userId: 'string';
-        boardId: 'string'; 
-        columnId: 'string';
-}
-const getAllTasks = (req, res) => {
+import { tasks, ITask } from './tasks.memory.repository'
+
+let tasksRepo = tasks;
+
+const getAllTasks = (_req, res) => {
     res.send(tasksRepo);
 };
 
 const getOneTask = (req, res) => {
     const { taskId } = req.params;
-    const task = tasksRepo.find((taskItem: Task) => taskItem.id === taskId);
+    const task = tasksRepo.find((taskItem: ITask) => taskItem.id === taskId);
     if (!task) {
         res.code(404).send('no such task');
     } else {
@@ -42,7 +36,7 @@ const addTask = (req, res) => {
 
 const deleteTask = (req, res) => {
     const { taskId } = req.params;
-    tasksRepo = tasksRepo.filter((task: Task) => task.id !== taskId);
+    tasksRepo = tasksRepo.filter((task: ITask) => task.id !== taskId);
     res.code(204).send();
 };
 
@@ -59,11 +53,11 @@ const updateTask = (req, res) => {
         columnId
     }
     
-    tasksRepo = tasksRepo.map( (task: Task) => task.id === taskId ? updatedTask : task);
+    tasksRepo = tasksRepo.map( (task: ITask) => task.id === taskId ? updatedTask : task);
     res.code(200).send(updatedTask);
 };
 
-const resetTaskExecutor = (userId) => {
+const resetTaskExecutor = (userId: string) => {
     for (let i = 0; i < tasksRepo.length; i += 1) {
         if (tasksRepo[i].userId === userId) {
             tasksRepo[i].userId = null;
@@ -71,8 +65,8 @@ const resetTaskExecutor = (userId) => {
     }
 }
 
-const deleteTaskByBoard = (boardId) => {
-    tasksRepo = tasksRepo.filter( (task: Task) => task.boardId !== boardId);
+const deleteTaskByBoard = (boardId: string) => {
+    tasksRepo = tasksRepo.filter( (task: ITask) => task.boardId !== boardId);
 }
 
 export {

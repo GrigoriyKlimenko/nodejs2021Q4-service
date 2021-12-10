@@ -1,8 +1,10 @@
 import uuid = require('uuid');
 import { deleteTaskByBoard } from '../tasks/tasks.service';
-let boardsRepo = require('./boards.memory.repository');
+import { boards } from './boards.memory.repository';
 
-const getAllBoards = (req, res) => {
+let boardsRepo = boards;
+
+const getAllBoards = (_req, res) => {
     res.send(boardsRepo);
 };
 

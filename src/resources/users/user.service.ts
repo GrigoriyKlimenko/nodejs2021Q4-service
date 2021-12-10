@@ -1,20 +1,22 @@
 import uuid from 'uuid';
 import { resetTaskExecutor } from '../tasks/tasks.service';
-let usersRepo = require('./user.memory.repository');
+import {users, IUser} from './user.memory.repository';
 
-const getAllUsers = (req, res) => {
+let usersRepo = users;
+
+const getAllUsers = (_req, res) => {
     res.send(usersRepo);
 };
 
 const getOneUser = (req, res) => {
     const { userId } = req.params;
-    const user = usersRepo.find((userItem) => userItem.id === userId);
+    const user = usersRepo.find((userItem: IUser) => userItem.id === userId);
     res.send(user);
 };
 
 const addUser = (req, res) => {
     const { name, login, password } = req.body;
-    const user = {
+    const user: IUser = {
         id: uuid.v4(),
         name,
         login,

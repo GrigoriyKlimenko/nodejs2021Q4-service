@@ -6,7 +6,7 @@ import {
   updateBoardSchema, 
 } from './boards.model';
 
-function boardsRouter (fastify, options, done) {
+function boardsRouter (fastify, _options, done) {
   fastify.get('/boards', getBoardsSchema);
   fastify.get('/boards/:boardId', getOneBoardSchema);
   fastify.post('/boards', addBoardSchema);

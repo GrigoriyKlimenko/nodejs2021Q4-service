@@ -1,3 +1,9 @@
-const users = [];
+interface IUser {
+    id: string;
+    name: string;
+    login: string;
+    password: string;
+}
+const users: IUser[] = [];
 
-export default users;
+export {users, IUser};

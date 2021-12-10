@@ -11,7 +11,7 @@
     "sourceType": "module",
     "ecmaVersion": 2021,
     "project": "./tsconfig.json",
-    "tsconfigRootDir": "__dirname",
+
     "createDefaultProgram": true,
     "ecmaFeatures": {
       "impliedStrict": true
@@ -26,7 +26,7 @@
     },
     "node": {
       "allowModules": ["electron"],
-      "resolvePaths": ["__dirname"],
+      "resolvePaths": "__dirname",
       "tryExtensions": [".js", ".ts"]
     }
   },
@@ -35,6 +35,7 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:node/recommended",
+    "plugin:import/typescript",
     "airbnb-base",
     "prettier"
   ],

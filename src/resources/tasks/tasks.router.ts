@@ -6,7 +6,7 @@ import {
   updateTaskSchema, 
 } from './tasks.model'
 
-function tasksRouter (fastify, options, done) {
+function tasksRouter (fastify, _options, done) {
   fastify.get('/boards/:boardId/tasks', getTasksSchema);
   fastify.get('/boards/:boardId/tasks/:taskId', getOneTaskSchema);
   fastify.post('/boards/:boardId/tasks', addTaskSchema);
