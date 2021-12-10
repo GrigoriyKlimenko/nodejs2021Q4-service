@@ -1,20 +1,32 @@
+import { FastifyRequest, FastifyReply } from 'fastify';
 import uuid from 'uuid';
 import { resetTaskExecutor } from '../tasks/tasks.service';
 import {users, IUser} from './user.memory.repository';
 
+type UserRequest = FastifyRequest <{
+    Params: {
+        userId: string;
+    }
+    Body: {
+        name: string;
+        login: string;
+        password: string;
+    }
+}>
+
 let usersRepo = users;
 
-const getAllUsers = (_req, res) => {
+const getAllUsers = (_req: UserRequest, res: FastifyReply) => {
     res.send(usersRepo);
 };
 
-const getOneUser = (req, res) => {
+const getOneUser = (req: UserRequest, res: FastifyReply) => {
     const { userId } = req.params;
     const user = usersRepo.find((userItem: IUser) => userItem.id === userId);
     res.send(user);
 };
 
-const addUser = (req, res) => {
+const addUser = (req: UserRequest, res: FastifyReply) => {
     const { name, login, password } = req.body;
     const user: IUser = {
         id: uuid.v4(),
@@ -27,14 +39,14 @@ const addUser = (req, res) => {
     res.code(201).send(user);
 };
 
-const deleteUser = (req, res) => {
+const deleteUser = (req: UserRequest, res: FastifyReply) => {
     const { userId } = req.params;
     usersRepo = usersRepo.filter((user) => user.id !== userId);
     resetTaskExecutor(userId);
     res.code(204).send();
 };
 
-const updateUser = (req, res) => {
+const updateUser = (req: UserRequest, res: FastifyReply) => {
     const { userId } = req.params;
     const { name, login, password } = req.body;
     const updatedUser = {
