@@ -1,3 +1,5 @@
+import { FastifyInstance } from 'fastify'
+import { IncomingMessage } from 'http'
 import { 
   getBoardsSchema, 
   getOneBoardSchema, 
@@ -6,7 +8,13 @@ import {
   updateBoardSchema, 
 } from './boards.model';
 
-function boardsRouter (fastify, _options, done) {
+/**
+   * This function initiate registration of routes for various url's
+   * @param fastify - param with server
+   * @param _option - optional param with options
+   * @param done - callback function
+*/
+function boardsRouter (fastify: FastifyInstance, _option: IncomingMessage, done: () => void) {
   fastify.get('/boards', getBoardsSchema);
   fastify.get('/boards/:boardId', getOneBoardSchema);
   fastify.post('/boards', addBoardSchema);
