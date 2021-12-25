@@ -5,10 +5,10 @@ import boardsRouter from './resources/boards/boards.router';
 import tasksRouter from './resources/tasks/tasks.router';
 
 
-const app = fastify({logger: logger});
+const app = fastify({ logger: logger });
 app.addHook('preHandler', function (req, _res, done) {
     if (req.body) {
-      req.log.info({ body: req.body }, 'parsed body')
+        req.log.info({ body: req.body }, 'parsed body')
     }
     if (req.params) {
         req.log.info({ params: req.params }, 'params')
@@ -17,7 +17,12 @@ app.addHook('preHandler', function (req, _res, done) {
         req.log.info({ query: req.query }, 'query')
     }
     done()
-  })
+})
+
+app.setErrorHandler((err, _req, res): void => {
+    logger.error(err);
+    res.status(err.statusCode || 500).send(err);
+});
 app.register(usersRouter);
 app.register(boardsRouter);
 app.register(tasksRouter);
