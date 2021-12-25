@@ -1,5 +1,6 @@
 import { PORT } from './common/config';
 import app from './app';
+import logger from './common/logger';
 
 /**
    * This function initiate listen method for server
@@ -9,10 +10,10 @@ import app from './app';
 const start = async (serverPort: number | string) => {
   try {
     await app.listen(serverPort, () => {
-      console.log(`Server is running on http://localhost:${PORT}`)
+      logger.info(`Server is running on http://localhost:${PORT}`)
     })
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 };
 
