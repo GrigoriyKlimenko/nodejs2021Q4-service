@@ -1,6 +1,11 @@
 import { TransportMultiOptions, pino, Logger } from "pino";
 import { LOG_LEVEL } from './config';
 
+/**
+   * function to represent level
+   * @param level - param with level in numeric representation
+   * @returns level in literal representation
+*/
 const getLogLevel = (level: string) => {
     switch (level) {
         case '1':
