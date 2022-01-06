@@ -9,7 +9,7 @@ import logger from './common/logger';
 */
 const start = async (serverPort: number | string) => {
   try {
-    await app.listen(serverPort, () => {
+    await app.listen(serverPort, "0.0.0.0",() => {
       logger.info(`Server is running on http://localhost:${PORT} and log-level: ${LOG_LEVEL}`)
     })
   } catch (error) {
