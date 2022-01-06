@@ -2,7 +2,7 @@ FROM alpine:3.15.0
 
 RUN apk --no-cache add nodejs npm
 
-EXPOSE 4000
+EXPOSE ${PORT}
 
 WORKDIR /dockerdir
 
