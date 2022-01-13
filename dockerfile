@@ -1,6 +1,4 @@
-FROM alpine:3.15.0
-
-RUN apk --no-cache add nodejs npm
+FROM node:16-alpine
 
 EXPOSE ${PORT}
 
@@ -8,7 +6,7 @@ WORKDIR /dockerdir
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install && npm cache clean --force
 
 COPY . .
 

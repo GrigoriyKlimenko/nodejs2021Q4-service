@@ -1,6 +1,7 @@
 import { PORT, LOG_LEVEL } from './common/config';
 import app from './app';
 import logger from './common/logger';
+import "reflect-metadata";
 
 /**
    * This function initiate listen method for server
