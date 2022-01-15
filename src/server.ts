@@ -1,7 +1,9 @@
+import "reflect-metadata";
 import { PORT, LOG_LEVEL } from './common/config';
 import app from './app';
 import logger from './common/logger';
-import "reflect-metadata";
+import {postgresqlConnect} from './common/dbConnect';
+
 
 /**
    * This function initiate listen method for server
@@ -10,6 +12,8 @@ import "reflect-metadata";
 */
 const start = async (serverPort: number | string) => {
   try {
+    await postgresqlConnect();
+    
     await app.listen(serverPort, "0.0.0.0",() => {
       logger.info(`Server is running on http://localhost:${PORT} and log-level: ${LOG_LEVEL}`)
     })
