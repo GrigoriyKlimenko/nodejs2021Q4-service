@@ -1,7 +1,8 @@
 import { v4 as uuid } from 'uuid';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { IBoard } from "./boards.memory.repository";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm';
+import { IBoard } from './boards.memory.repository';
 import { BoardsModel } from './boards.model';
+import { TasksModel } from '../tasks/tasks.model';
 
 interface IColumn {
   id: string;
@@ -13,23 +14,24 @@ interface IColumn {
 @Entity({ name: 'columns' })
 class ColumnsModel implements IColumn{
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column('varchar', { length: 255, default: '' })
-  title: string;
+  title!: string;
 
   @Column('integer', { default: 0 })
-  order: number;
+  order!: number;
 
-  @ManyToOne(() => BoardsModel, board => board.columns)
-  board: BoardsModel;
+  @OneToMany((_type) => TasksModel, (task) => task.column, {
+    eager: true,
+    cascade: true,
+  })
+  tasks!: TasksModel[];
 
-  constructor(id: string = uuid(), title: string = '', order: number = 0, board: BoardsModel) {
-    this.id = id;
-    this.title = title;
-    this.order = order;
-    this.board = board;
-  }
+  @ManyToOne(() => BoardsModel, board => board.columns, {
+    onDelete: 'CASCADE',
+  })
+  board!: BoardsModel;
 }
 
 export {

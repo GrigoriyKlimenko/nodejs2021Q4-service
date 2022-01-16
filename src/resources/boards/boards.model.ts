@@ -1,25 +1,37 @@
 import { v4 as uuid } from 'uuid';
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { IBoard } from "./boards.memory.repository";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinTable, AfterLoad } from 'typeorm';
+import { IBoard } from './boards.memory.repository';
 import { ColumnsModel } from './columns.model';
 import { getAllBoards, getOneBoard, addBoard, deleteBoard, updateBoard } from './boards.service';
+import { TasksModel } from '../tasks/tasks.model';
 
 @Entity({ name: 'boards' })
 class BoardsModel implements IBoard {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column('varchar', { length: 255, default: '' })
-  title: string;
+  title!: string;
 
-  @OneToMany(() => ColumnsModel, column => column.board)
-  columns: ColumnsModel[];
+  @OneToMany(() => ColumnsModel, column => column.board, {
+    eager: true,
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
+  })
+  @JoinTable()
+  columns!: ColumnsModel[];
 
-  constructor(id: string = uuid(), title: string = 'string', columns: ColumnsModel[]) {
-    this.id = id;
-    this.title = title;
-    this.columns = columns;
+  @OneToMany((_type) => TasksModel, (task) => task.board, {
+    eager: false,
+  })
+  tasks!: TasksModel[];
+
+  @AfterLoad()
+  sortItems(): void {
+    if (this.columns.length > 0) {
+      this.columns.sort((a, b) => a.order - b.order);
+    }
   }
+
 }
 
 const getBoardsSchema = {

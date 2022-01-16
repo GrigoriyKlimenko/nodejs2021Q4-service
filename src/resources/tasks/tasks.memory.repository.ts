@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm';
-import { TasksModel } from "./tasks.model";
+import { TasksModel } from './tasks.model';
 
 interface ITask {
     id: string;
@@ -11,21 +11,19 @@ interface ITask {
     columnId: string | null;
 }
 
-const tasks: ITask[] = [];
-
-const getAll = async (boardId: string): Promise<TasksModel[]> => {
+const getAll = async (boardId: string): Promise<ITask[]> => {
     const tasks = await getRepository(TasksModel).find({where: {boardId}});
     return tasks;
 };
-const getById = async (boardId: string, taskId: string): Promise<TasksModel | undefined> => {
+const getById = async (boardId: string, taskId: string): Promise<ITask | undefined> => {
     const task = await getRepository(TasksModel).findOne({where: {boardId, id: taskId}});
     return task;
 };
-const addTask = async (task: TasksModel): Promise<TasksModel> => {
+const addTask = async (task: ITask): Promise<ITask> => {
     const newTask = await getRepository(TasksModel).save(task);
     return newTask;
 };
-const updateTask = async (task: TasksModel): Promise<TasksModel> => {
+const updateTask = async (task: ITask): Promise<ITask> => {
     const updatedTask = await getRepository(TasksModel).save(task);
     return updatedTask;
 };
@@ -36,7 +34,6 @@ const deleteById = async (_boardId: string, id: string): Promise<void> => {
 const tasksRepositoryActions = {getAll, getById, addTask, updateTask, deleteById};
 
 export { 
-    tasks, 
     ITask,
     tasksRepositoryActions 
 };

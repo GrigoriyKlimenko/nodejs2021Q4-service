@@ -19,11 +19,8 @@ const config: ConnectionOptions = {
     password: POSTGRES_PASSWORD,
     database: POSTGRES_DB,
     entities: [UsersModel, BoardsModel, ColumnsModel, TasksModel],
-    logging: false,
     synchronize: false,
-    dropSchema: false,
     migrations: ['./src/migrations/**/*.ts'],
-    migrationsRun: false,
     cli: {
       migrationsDir: 'src/migrations'
     }

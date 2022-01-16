@@ -1,7 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { v4 } from 'uuid';
-// import { resetTaskExecutor } from '../tasks/tasks.service';
-import { users, IUser, usersRepositoryActions } from './user.memory.repository';
+import { IUser, usersRepositoryActions } from './user.memory.repository';
 
 type UserRequest = FastifyRequest <{
     Params: {
@@ -13,8 +12,6 @@ type UserRequest = FastifyRequest <{
         password: string;
     }
 }>
-
-// let usersRepo = users;
 
 /**
    * This function initiate response with all Users in DB and 200 status
@@ -67,8 +64,6 @@ const addUser = async (req: UserRequest, res: FastifyReply) => {
 const deleteUser = async (req: UserRequest, res: FastifyReply) => {
     const { userId } = req.params;
     await usersRepositoryActions.deleteById(userId);
-    // usersRepo = usersRepo.filter((user) => user.id !== userId);
-    // resetTaskExecutor(userId);
     res.code(204).send();
 };
 

@@ -101,24 +101,6 @@ const updateTask = async (req: TaskRequest, res: FastifyReply) => {
     const updatedTask = await tasksRepositoryActions.updateTask(task);
     res.code(200).send(updatedTask);
 };
-/**
-   * This function nullifies userId field in task if it user was deleted
-   * @param userId - id of user wich was deleted
-*/
-// const resetTaskExecutor = (userId: string): void => {
-//     for (let i = 0; i < tasksRepo.length; i += 1) {
-//         if (tasksRepo[i].userId === userId) {
-//             tasksRepo[i].userId = null;
-//         }
-//     }
-// }
-/**
-   * This function to delete task if it board was deleted
-   * @param boardId - id of board wich was deleted
-*/
-// const deleteTaskByBoard = (boardId: string): void => {
-//     tasksRepo = tasksRepo.filter( (task: ITask) => task.boardId !== boardId);
-// }
 
 export {
     getAllTasks,
@@ -126,6 +108,4 @@ export {
     addTask,
     deleteTask,
     updateTask,
-    // resetTaskExecutor,
-    // deleteTaskByBoard,
 };

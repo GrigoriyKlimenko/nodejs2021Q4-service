@@ -1,41 +1,50 @@
-import { v4 as uuid } from 'uuid';
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { getAllTasks, getOneTask, addTask, deleteTask, updateTask } from './tasks.service';
 import { ITask } from './tasks.memory.repository';
+import { UsersModel } from '../users/user.model'
+import { BoardsModel } from '../boards/boards.model'
+import { ColumnsModel } from '../boards/columns.model'
 
 @Entity({ name: 'tasks' })
 class TasksModel implements ITask {
   @PrimaryGeneratedColumn('uuid')
-  id: string = '';
+  id!: string;
 
   @Column('varchar', { length: 255, default: '' })
-  title: string;
+  title!: string;
 
   @Column('integer', { default: 0 })
-  order: number;
+  order!: number;
 
   @Column('varchar', { length: 255, default: '' })
-  description: string;
+  description!: string;
 
-  @Column('varchar', { length: 255, default: null, nullable: true })
-  userId: string | null;
+  @ManyToOne((_type) => UsersModel, (user) => user.tasks, {
+    eager: false,
+    onDelete: 'SET NULL',
+  })
+  user!: UsersModel;
 
-  @Column('varchar', { length: 255, default: null, nullable: true })
-  boardId: string | null;
+  @Column('varchar', { default: null, nullable: true })
+  userId!: string | null;
 
-  @Column('varchar', { length: 255, default: null, nullable: true })
-  columnId: string | null;
+  @ManyToOne((_type) => BoardsModel, (board) => board.tasks, {
+    eager: false,
+    onDelete: 'CASCADE',
+  })
+  board!: BoardsModel;
 
-  constructor(id: string = uuid(), title: string = '', order: number = 0, description: string = '', userId: string | null,
-    boardId: string, columnId: string) {
-    this.id = id;
-    this.title = title;
-    this.order = order;
-    this.description = description;
-    this.userId = userId;
-    this.boardId = boardId;
-    this.columnId = columnId;
-  }
+  @Column('varchar', { default: null, nullable: true })
+  boardId!: string | null;
+
+  @ManyToOne((_type) => ColumnsModel, (column) => column.tasks, {
+    eager: false,
+  })
+  column!: ColumnsModel;
+
+  @Column('varchar', {default: null, nullable: true })
+  columnId!: string | null;
+
 }
 
 const getTasksSchema = {

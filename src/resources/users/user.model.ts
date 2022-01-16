@@ -1,28 +1,26 @@
-import { v4 as uuid } from 'uuid';
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { getAllUsers, getOneUser, addUser, deleteUser, updateUser } from './user.service';
-import { IUser } from "./user.memory.repository";
+import { IUser } from './user.memory.repository';
+import { TasksModel } from '../tasks/tasks.model';
 
 @Entity({ name: 'users' })
 class UsersModel implements IUser{
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column('varchar', { length: 255, default: 'User' })
-  name: string;
+  name!: string;
 
   @Column('varchar', { length: 255, default: 'Login' })
-  login: string;
+  login!: string;
 
   @Column('varchar', { length: 255, default: 'Password', select: false })
-  password: string;
+  password!: string;
 
-  constructor(id: string = uuid(), name: string = 'User', login: string = 'Login', password: string = 'Password') {
-    this.id = id;
-    this.name = name;
-    this.login = login;
-    this.password = password;
-  }
+  @OneToMany((_type) => TasksModel, (task) => task.user, {
+    eager: false,
+  })
+  tasks!: TasksModel[];
 }
 
 const getUsersSchema = {
