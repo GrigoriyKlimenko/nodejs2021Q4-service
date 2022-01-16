@@ -1,4 +1,29 @@
+import { v4 as uuid } from 'uuid';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { getAllUsers, getOneUser, addUser, deleteUser, updateUser } from './user.service';
+import { IUser } from "./user.memory.repository";
+
+@Entity({ name: 'users' })
+class UsersModel implements IUser{
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column('varchar', { length: 255, default: 'User' })
+  name: string;
+
+  @Column('varchar', { length: 255, default: 'Login' })
+  login: string;
+
+  @Column('varchar', { length: 255, default: 'Password', select: false })
+  password: string;
+
+  constructor(id: string = uuid(), name: string = 'User', login: string = 'Login', password: string = 'Password') {
+    this.id = id;
+    this.name = name;
+    this.login = login;
+    this.password = password;
+  }
+}
 
 const getUsersSchema = {
   schema: {
@@ -103,4 +128,5 @@ export {
   addUserSchema,
   deleteUserSchema,
   updateUserSchema,
+  UsersModel
 };

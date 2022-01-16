@@ -10,4 +10,7 @@ interface ITask {
 
 const tasks: ITask[] = [];
 
-export { tasks, ITask };
+export { 
+    tasks, 
+    ITask 
+};

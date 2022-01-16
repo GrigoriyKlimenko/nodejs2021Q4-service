@@ -6,4 +6,7 @@ interface IUser {
 }
 const users: IUser[] = [];
 
-export {users, IUser};
+export {
+    users, 
+    IUser
+};

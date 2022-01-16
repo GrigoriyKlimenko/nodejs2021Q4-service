@@ -1,4 +1,26 @@
+import { v4 as uuid } from 'uuid';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { IBoard } from "./boards.memory.repository";
+import { ColumnsModel } from './columns.model';
 import { getAllBoards, getOneBoard, addBoard, deleteBoard, updateBoard } from './boards.service';
+
+@Entity({ name: 'boards' })
+class BoardsModel implements IBoard {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column('varchar', { length: 255, default: '' })
+  title: string;
+
+  @OneToMany(() => ColumnsModel, column => column.board)
+  columns: ColumnsModel[];
+
+  constructor(id: string = uuid(), title: string = 'string', columns: ColumnsModel[]) {
+    this.id = id;
+    this.title = title;
+    this.columns = columns;
+  }
+}
 
 const getBoardsSchema = {
   schema: {
@@ -8,9 +30,9 @@ const getBoardsSchema = {
         items: {
           type: 'object',
           properties: {
-            id: {type: 'string'},
-            title: {type: 'string'},
-            columns: {type: 'array'},
+            id: { type: 'string' },
+            title: { type: 'string' },
+            columns: { type: 'array' },
           }
         }
       }
@@ -24,11 +46,11 @@ const getOneBoardSchema = {
     response: {
       200: {
         type: 'object',
-          properties: {
-            id: {type: 'string'},
-            title: {type: 'string'},
-            columns: {type: 'array'},
-          }
+        properties: {
+          id: { type: 'string' },
+          title: { type: 'string' },
+          columns: { type: 'array' },
+        }
       }
     }
   },
@@ -41,18 +63,18 @@ const addBoardSchema = {
       type: 'object',
       required: ['title', 'columns'],
       properties: {
-        title: {type: 'string'},
-        columns: {type: 'array'},
+        title: { type: 'string' },
+        columns: { type: 'array' },
       }
     },
     response: {
       201: {
         type: 'object',
-          properties: {
-            id: {type: 'string'},
-            title: {type: 'string'},
-            columns: {type: 'array'},
-          }
+        properties: {
+          id: { type: 'string' },
+          title: { type: 'string' },
+          columns: { type: 'array' },
+        }
       }
     }
   },
@@ -77,18 +99,18 @@ const updateBoardSchema = {
       type: 'object',
       required: ['title', 'columns'],
       properties: {
-        title: {type: 'string'},
-        columns: {type: 'array'},
+        title: { type: 'string' },
+        columns: { type: 'array' },
       }
     },
     response: {
       200: {
         type: 'object',
-          properties: {
-            id: {type: 'string'},
-            title: {type: 'string'},
-            columns: {type: 'array'},
-          }
+        properties: {
+          id: { type: 'string' },
+          title: { type: 'string' },
+          columns: { type: 'array' },
+        }
       }
     }
   },
@@ -101,4 +123,5 @@ export {
   addBoardSchema,
   deleteBoardSchema,
   updateBoardSchema,
+  BoardsModel
 };
