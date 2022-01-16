@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { v4 } from 'uuid';
-import { tasks, ITask } from './tasks.memory.repository';
+import { ITask, tasksRepositoryActions } from './tasks.memory.repository';
 
 type TaskRequest = FastifyRequest <{
     Params: {
@@ -17,15 +17,16 @@ type TaskRequest = FastifyRequest <{
     }
 }>
 
-let tasksRepo = tasks;
 
 /**
    * This function initiate response with all Tasks in DB and 200 status
-   * @param req - optional request param
+   * @param req - request param
    * @param res - param for response
 */
-const getAllTasks = (_req: TaskRequest, res: FastifyReply) => {
-    res.send(tasksRepo);
+const getAllTasks = async (req: TaskRequest, res: FastifyReply) => {
+    const { boardId } = req.params;
+    const tasks = await tasksRepositoryActions.getAll(boardId);
+    res.send(tasks);
 };
 
 /**
@@ -34,9 +35,9 @@ const getAllTasks = (_req: TaskRequest, res: FastifyReply) => {
    * @param req - request param with taskId
    * @param res - param for response
 */
-const getOneTask = (req: TaskRequest, res: FastifyReply) => {
-    const { taskId } = req.params;
-    const task = tasksRepo.find((taskItem: ITask) => taskItem.id === taskId);
+const getOneTask = async (req: TaskRequest, res: FastifyReply) => {
+    const { boardId, taskId } = req.params;
+    const task = await tasksRepositoryActions.getById(boardId, taskId);
     if (!task) {
         res.code(404).send('no such task');
     } else {
@@ -50,7 +51,7 @@ const getOneTask = (req: TaskRequest, res: FastifyReply) => {
    * @param req - request param with boardId and body with task data
    * @param res - param for response
 */
-const addTask = (req: TaskRequest, res: FastifyReply) => {
+const addTask = async (req: TaskRequest, res: FastifyReply) => {
     const { boardId } = req.params;
     const { title, order, description, userId, columnId } = req.body;
     const task = {
@@ -63,8 +64,8 @@ const addTask = (req: TaskRequest, res: FastifyReply) => {
         columnId
     }
 
-    tasksRepo.push(task);
-    res.code(201).send(task);
+    const addedTask = await tasksRepositoryActions.addTask(task);
+    res.code(201).send(addedTask);
 };
 
 /**
@@ -72,9 +73,9 @@ const addTask = (req: TaskRequest, res: FastifyReply) => {
    * @param req - request param with taskId
    * @param res - param for response
 */
-const deleteTask = (req: TaskRequest, res: FastifyReply) => {
-    const { taskId } = req.params;
-    tasksRepo = tasksRepo.filter((task: ITask) => task.id !== taskId);
+const deleteTask = async (req: TaskRequest, res: FastifyReply) => {
+    const { boardId, taskId } = req.params;
+    await tasksRepositoryActions.deleteById(boardId, taskId);
     res.code(204).send();
 };
 
@@ -84,10 +85,10 @@ const deleteTask = (req: TaskRequest, res: FastifyReply) => {
    * @param req - request param with taskId and body with other data
    * @param res - param for response
 */
-const updateTask = (req: TaskRequest, res: FastifyReply) => {
+const updateTask = async (req: TaskRequest, res: FastifyReply) => {
     const { taskId } = req.params;
     const { title, order, description, userId, boardId, columnId } = req.body;
-    const updatedTask = {
+    const task = {
         id: taskId,
         title, 
         order, 
@@ -97,27 +98,27 @@ const updateTask = (req: TaskRequest, res: FastifyReply) => {
         columnId
     }
     
-    tasksRepo = tasksRepo.map( (task: ITask) => task.id === taskId ? updatedTask : task);
+    const updatedTask = await tasksRepositoryActions.updateTask(task);
     res.code(200).send(updatedTask);
 };
 /**
    * This function nullifies userId field in task if it user was deleted
    * @param userId - id of user wich was deleted
 */
-const resetTaskExecutor = (userId: string): void => {
-    for (let i = 0; i < tasksRepo.length; i += 1) {
-        if (tasksRepo[i].userId === userId) {
-            tasksRepo[i].userId = null;
-        }
-    }
-}
+// const resetTaskExecutor = (userId: string): void => {
+//     for (let i = 0; i < tasksRepo.length; i += 1) {
+//         if (tasksRepo[i].userId === userId) {
+//             tasksRepo[i].userId = null;
+//         }
+//     }
+// }
 /**
    * This function to delete task if it board was deleted
    * @param boardId - id of board wich was deleted
 */
-const deleteTaskByBoard = (boardId: string): void => {
-    tasksRepo = tasksRepo.filter( (task: ITask) => task.boardId !== boardId);
-}
+// const deleteTaskByBoard = (boardId: string): void => {
+//     tasksRepo = tasksRepo.filter( (task: ITask) => task.boardId !== boardId);
+// }
 
 export {
     getAllTasks,
@@ -125,6 +126,6 @@ export {
     addTask,
     deleteTask,
     updateTask,
-    resetTaskExecutor,
-    deleteTaskByBoard,
+    // resetTaskExecutor,
+    // deleteTaskByBoard,
 };

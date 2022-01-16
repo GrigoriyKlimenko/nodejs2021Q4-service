@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { v4 } from 'uuid';
-import { deleteTaskByBoard } from '../tasks/tasks.service';
-import { boards } from './boards.memory.repository';
+import { boardsRepositoryActions } from "./boards.memory.repository";
+// import { deleteTaskByBoard } from '../tasks/tasks.service';
 
 type BoardRequest = FastifyRequest <{
     Params: {
@@ -14,15 +14,14 @@ type BoardRequest = FastifyRequest <{
     }
 }>
 
-let boardsRepo = boards;
-
 /**
    * This function initiate response with all Boards in DB and 200 status
    * @param req - optional request param
    * @param res - param for response
 */
-const getAllBoards = (_req: BoardRequest, res: FastifyReply) => {
-    res.send(boardsRepo);
+const getAllBoards = async (_req: BoardRequest, res: FastifyReply) => {
+    const boards = await boardsRepositoryActions.getAll();
+    res.send(boards);
 };
 
 /**
@@ -31,9 +30,9 @@ const getAllBoards = (_req: BoardRequest, res: FastifyReply) => {
    * @param req - request param with boardId
    * @param res - param for response
 */
-const getOneBoard = (req: BoardRequest, res: FastifyReply) => {
+const getOneBoard = async (req: BoardRequest, res: FastifyReply) => {
     const { boardId } = req.params;
-    const board = boardsRepo.find((boardItem) => boardItem.id === boardId);
+    const board = await boardsRepositoryActions.getById(boardId);
     if (!board) {
         res.code(404).send('no such board');
     } else {
@@ -47,7 +46,7 @@ const getOneBoard = (req: BoardRequest, res: FastifyReply) => {
    * @param req - request param with body data
    * @param res - param for response
 */
-const addBoard = (req: BoardRequest, res: FastifyReply) => {
+const addBoard = async (req: BoardRequest, res: FastifyReply) => {
     const { title, columns } = req.body;
     const board = {
         id: v4(),
@@ -55,8 +54,8 @@ const addBoard = (req: BoardRequest, res: FastifyReply) => {
         columns,
     }
 
-    boardsRepo.push(board);
-    res.code(201).send(board);
+    const newBoard = await boardsRepositoryActions.addBoard(board);
+    res.code(201).send(newBoard);
 };
 
 /**
@@ -66,10 +65,10 @@ const addBoard = (req: BoardRequest, res: FastifyReply) => {
    * @param req - request param with boardId
    * @param res - param for response
 */
-const deleteBoard = (req: BoardRequest, res: FastifyReply) => {
+const deleteBoard = async (req: BoardRequest, res: FastifyReply) => {
     const { boardId } = req.params;
-    boardsRepo = boardsRepo.filter((board) => board.id !== boardId);
-    deleteTaskByBoard(boardId);
+    await boardsRepositoryActions.deleteById(boardId);
+    // deleteTaskByBoard(boardId);
     res.code(204).send();
 };
 
@@ -79,16 +78,16 @@ const deleteBoard = (req: BoardRequest, res: FastifyReply) => {
    * @param req - request param with boardId and body with other data
    * @param res - param for response
 */
-const updateBoard = (req: BoardRequest, res: FastifyReply) => {
+const updateBoard =async (req: BoardRequest, res: FastifyReply) => {
     const { boardId } = req.params;
     const { title, columns } = req.body;
-    const updatedBoard = {
+    const board = {
         id: boardId,
         title,
         columns,
     }
     
-    boardsRepo = boardsRepo.map( board => board.id === boardId ? updatedBoard : board);
+    const updatedBoard = await boardsRepositoryActions.updateBoard(board);
     res.code(200).send(updatedBoard);
 };
 

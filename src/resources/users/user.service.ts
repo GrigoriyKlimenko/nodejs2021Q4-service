@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { v4 } from 'uuid';
-import { resetTaskExecutor } from '../tasks/tasks.service';
-import {users, IUser} from './user.memory.repository';
+// import { resetTaskExecutor } from '../tasks/tasks.service';
+import { users, IUser, usersRepositoryActions } from './user.memory.repository';
 
 type UserRequest = FastifyRequest <{
     Params: {
@@ -14,15 +14,16 @@ type UserRequest = FastifyRequest <{
     }
 }>
 
-let usersRepo = users;
+// let usersRepo = users;
 
 /**
    * This function initiate response with all Users in DB and 200 status
    * @param req - optional request param
    * @param res - param for response
 */
-const getAllUsers = (_req: UserRequest, res: FastifyReply) => {
-    res.send(usersRepo);
+const getAllUsers = async (_req: UserRequest, res: FastifyReply) => {
+    const users = await usersRepositoryActions.getAll();
+    res.send(users);
 };
 
 /**
@@ -31,9 +32,9 @@ const getAllUsers = (_req: UserRequest, res: FastifyReply) => {
    * @param req - request param with userId
    * @param res - param for response
 */
-const getOneUser = (req: UserRequest, res: FastifyReply) => {
+const getOneUser = async (req: UserRequest, res: FastifyReply) => {
     const { userId } = req.params;
-    const user = usersRepo.find((userItem: IUser) => userItem.id === userId);
+    const user = await usersRepositoryActions.getById(userId);
     res.send(user);
 };
 
@@ -43,7 +44,7 @@ const getOneUser = (req: UserRequest, res: FastifyReply) => {
    * @param req - request param with body data
    * @param res - param for response
 */
-const addUser = (req: UserRequest, res: FastifyReply) => {
+const addUser = async (req: UserRequest, res: FastifyReply) => {
     const { name, login, password } = req.body;
     const user: IUser = {
         id: v4(),
@@ -52,7 +53,7 @@ const addUser = (req: UserRequest, res: FastifyReply) => {
         password
     }
 
-    usersRepo.push(user);
+    await usersRepositoryActions.addUser(user);
     res.code(201).send(user);
 };
 
@@ -63,10 +64,11 @@ const addUser = (req: UserRequest, res: FastifyReply) => {
    * @param req - request param with userId
    * @param res - param for response
 */
-const deleteUser = (req: UserRequest, res: FastifyReply) => {
+const deleteUser = async (req: UserRequest, res: FastifyReply) => {
     const { userId } = req.params;
-    usersRepo = usersRepo.filter((user) => user.id !== userId);
-    resetTaskExecutor(userId);
+    await usersRepositoryActions.deleteById(userId);
+    // usersRepo = usersRepo.filter((user) => user.id !== userId);
+    // resetTaskExecutor(userId);
     res.code(204).send();
 };
 
@@ -76,7 +78,7 @@ const deleteUser = (req: UserRequest, res: FastifyReply) => {
    * @param req - request param with userId and body with other data
    * @param res - param for response
 */
-const updateUser = (req: UserRequest, res: FastifyReply) => {
+const updateUser = async (req: UserRequest, res: FastifyReply) => {
     const { userId } = req.params;
     const { name, login, password } = req.body;
     const updatedUser = {
@@ -86,8 +88,8 @@ const updateUser = (req: UserRequest, res: FastifyReply) => {
         password
     }
     
-    usersRepo = usersRepo.map( user => user.id === userId ? updatedUser : user);
-    res.code(200).send(updatedUser);
+    const userToResp = await usersRepositoryActions.updateUser(updatedUser);
+    res.code(200).send(userToResp);
 };
 
 export {
