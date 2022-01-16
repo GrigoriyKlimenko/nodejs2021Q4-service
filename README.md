@@ -11,6 +11,12 @@
 git clone {repository URL}
 ```
 
+## Branch for task 8 - PostgreSQL & Typeorm
+
+```
+git checkout task8
+```
+
 ## Installing NPM modules
 
 ```
