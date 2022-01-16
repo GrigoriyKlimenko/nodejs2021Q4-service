@@ -35,6 +35,22 @@ To run app:
 docker-compose up
 ```
 
+Now config have base default options for first start: generate mutations and run it, run server
+
+## Running mutations 
+
+generate mutations:
+
+```
+npm run migration:generate
+```
+
+run mutations:
+
+```
+npm run migration:run
+```
+
 ## Logging levels
 
 level 1: 'fatal';
