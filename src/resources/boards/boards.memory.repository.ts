@@ -1,5 +1,5 @@
-import { IColumn } from './columns.model';
 import { getRepository } from 'typeorm';
+import { IColumn } from './columns.model';
 import { BoardsModel } from './boards.model';
 
 interface IBoard {
@@ -27,7 +27,7 @@ const updateBoard = async (board: IBoard): Promise<IBoard> => {
     return boardApd;
 };
 const deleteById = async (id: string): Promise<void> => {
-    const removeResult = await getRepository(BoardsModel).delete(id);
+    await getRepository(BoardsModel).delete(id);
 };
 const boardsRepositoryActions = {getAll, getById, addBoard, updateBoard, deleteById};
 

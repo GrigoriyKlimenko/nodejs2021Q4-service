@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinTable, AfterLoad } from 'typeorm';
 import { IBoard } from './boards.memory.repository';
 import { ColumnsModel } from './columns.model';
@@ -20,7 +19,7 @@ class BoardsModel implements IBoard {
   @JoinTable()
   columns!: ColumnsModel[];
 
-  @OneToMany((_type) => TasksModel, (task) => task.board, {
+  @OneToMany(() => TasksModel, (task) => task.board, {
     eager: false,
   })
   tasks!: TasksModel[];

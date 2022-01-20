@@ -17,7 +17,7 @@ class UsersModel implements IUser{
   @Column('varchar', { length: 255, default: 'Password', select: false })
   password!: string;
 
-  @OneToMany((_type) => TasksModel, (task) => task.user, {
+  @OneToMany(() => TasksModel, (task) => task.user, {
     eager: false,
   })
   tasks!: TasksModel[];

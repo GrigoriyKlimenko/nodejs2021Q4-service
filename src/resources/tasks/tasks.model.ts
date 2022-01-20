@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { getAllTasks, getOneTask, addTask, deleteTask, updateTask } from './tasks.service';
 import { ITask } from './tasks.memory.repository';
 import { UsersModel } from '../users/user.model'
@@ -19,7 +19,7 @@ class TasksModel implements ITask {
   @Column('varchar', { length: 255, default: '' })
   description!: string;
 
-  @ManyToOne((_type) => UsersModel, (user) => user.tasks, {
+  @ManyToOne(() => UsersModel, (user) => user.tasks, {
     eager: false,
     onDelete: 'SET NULL',
   })
@@ -28,7 +28,7 @@ class TasksModel implements ITask {
   @Column('varchar', { default: null, nullable: true })
   userId!: string | null;
 
-  @ManyToOne((_type) => BoardsModel, (board) => board.tasks, {
+  @ManyToOne(() => BoardsModel, (board) => board.tasks, {
     eager: false,
     onDelete: 'CASCADE',
   })
@@ -37,7 +37,7 @@ class TasksModel implements ITask {
   @Column('varchar', { default: null, nullable: true })
   boardId!: string | null;
 
-  @ManyToOne((_type) => ColumnsModel, (column) => column.tasks, {
+  @ManyToOne(() => ColumnsModel, (column) => column.tasks, {
     eager: false,
   })
   column!: ColumnsModel;

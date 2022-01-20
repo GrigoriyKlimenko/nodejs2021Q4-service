@@ -28,7 +28,7 @@ const updateTask = async (task: ITask): Promise<ITask> => {
     return updatedTask;
 };
 const deleteById = async (_boardId: string, id: string): Promise<void> => {
-    const removedResult = await getRepository(TasksModel).delete({id});
+    await getRepository(TasksModel).delete({id});
 };
 
 const tasksRepositoryActions = {getAll, getById, addTask, updateTask, deleteById};

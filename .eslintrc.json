@@ -52,6 +52,8 @@
     "no-underscore-dangle": "off",
     "import/prefer-default-export": "off",
     "tsdoc/syntax": "error",
+    "class-methods-use-this": "off",
+    "import/no-cycle": "off",
     "@typescript-eslint/no-explicit-any": ["error"],
     "lines-between-class-members": "off"
   }

@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm';
 import { IBoard } from './boards.memory.repository';
 import { BoardsModel } from './boards.model';
@@ -22,7 +21,7 @@ class ColumnsModel implements IColumn{
   @Column('integer', { default: 0 })
   order!: number;
 
-  @OneToMany((_type) => TasksModel, (task) => task.column, {
+  @OneToMany(() => TasksModel, (task) => task.column, {
     eager: true,
     cascade: true,
   })

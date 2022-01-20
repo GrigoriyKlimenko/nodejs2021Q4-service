@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { v4 } from 'uuid';
-import { ITask, tasksRepositoryActions } from './tasks.memory.repository';
+import { tasksRepositoryActions } from './tasks.memory.repository';
 
 type TaskRequest = FastifyRequest <{
     Params: {

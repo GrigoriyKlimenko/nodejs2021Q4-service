@@ -27,7 +27,7 @@ const updateUser = async (user: IUser): Promise<IUser> => {
     return userApd;
 };
 const deleteById = async (id: string): Promise<void> => {
-    const removeResult = await getRepository(UsersModel).delete(id);
+    await getRepository(UsersModel).delete(id);
 };
 
 const usersRepositoryActions = {getAll, getById, addUser, updateUser, deleteById};
