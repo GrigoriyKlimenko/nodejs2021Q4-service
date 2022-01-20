@@ -11,6 +11,12 @@
 git clone {repository URL}
 ```
 
+## Branch for task 8 - PostgreSQL & Typeorm
+
+```
+git checkout task8
+```
+
 ## Installing NPM modules
 
 ```
@@ -26,6 +32,39 @@ npm start
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
+
+## Running application with docker
+
+To run app:
+
+```
+docker-compose up
+```
+
+Now config have base default options for first start: generate mutations and run it, run server
+
+## Running mutations 
+
+generate mutations:
+
+```
+npm run migration:generate
+```
+
+run mutations:
+
+```
+npm run migration:run
+```
+
+## Logging levels
+
+level 1: 'fatal';
+level 2: 'error';
+level 3: 'warn';
+level 4: 'info';
+level 5: 'debug';
+level 6: 'trace'; 
 
 ## Testing
 
