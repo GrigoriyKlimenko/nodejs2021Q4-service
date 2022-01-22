@@ -1,6 +1,8 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { v4 } from 'uuid';
 import { IUser, usersRepositoryActions } from './user.memory.repository';
+import { SALT_ROUNDS } from '../../common/config';
+const bcrypt = require('bcrypt');
 
 type UserRequest = FastifyRequest <{
     Params: {
@@ -43,11 +45,12 @@ const getOneUser = async (req: UserRequest, res: FastifyReply) => {
 */
 const addUser = async (req: UserRequest, res: FastifyReply) => {
     const { name, login, password } = req.body;
+    const cryptedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     const user: IUser = {
         id: v4(),
         name,
         login,
-        password
+        password: cryptedPassword,
     }
 
     await usersRepositoryActions.addUser(user);
