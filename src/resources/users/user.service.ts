@@ -1,9 +1,9 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { v4 } from 'uuid';
+import bcrypt from 'bcrypt';
 import logger from '../../common/logger';
 import { IUser, usersRepositoryActions } from './user.memory.repository';
 import { SALT_ROUNDS } from '../../common/config';
-const bcrypt = require('bcrypt');
 
 type UserRequest = FastifyRequest <{
     Params: {
