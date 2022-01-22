@@ -29,10 +29,19 @@ const updateUser = async (user: IUser): Promise<IUser> => {
 const deleteById = async (id: string): Promise<void> => {
     await getRepository(UsersModel).delete(id);
 };
+const addDefaultUser = async (user: IUser): Promise<IUser> => {
+    const userRepository = getRepository(UsersModel);
+    let currentUser = await userRepository.findOne({where: {login: user.login}});
+    if (!currentUser) {
+       currentUser = await getRepository(UsersModel).save(user);
+    }
+    return currentUser;
+}
 
-const usersRepositoryActions = {getAll, getById, addUser, updateUser, deleteById};
+const usersRepositoryActions = {getAll, getById, addUser, updateUser, deleteById, addDefaultUser};
 
 export {
     IUser,
-    usersRepositoryActions
+    usersRepositoryActions,
+    addDefaultUser
 };

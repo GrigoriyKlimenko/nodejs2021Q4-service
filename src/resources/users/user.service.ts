@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { v4 } from 'uuid';
+import logger from '../../common/logger';
 import { IUser, usersRepositoryActions } from './user.memory.repository';
 import { SALT_ROUNDS } from '../../common/config';
 const bcrypt = require('bcrypt');
@@ -14,6 +15,20 @@ type UserRequest = FastifyRequest <{
         password: string;
     }
 }>
+
+const addDefaultUser = async () => {
+    const defaultUser = await usersRepositoryActions.addDefaultUser({
+        id: v4(),
+        name: 'User',
+        login: 'admin',
+        password: await bcrypt.hash('admin', SALT_ROUNDS),
+    });
+    if (defaultUser) {
+        logger.info(`Default user - admin:admin`);
+    } else {
+        throw new Error ('Default user add problem');
+    }
+}
 
 /**
    * This function initiate response with all Users in DB and 200 status
@@ -96,4 +111,5 @@ export {
     addUser,
     deleteUser,
     updateUser,
+    addDefaultUser
 };
