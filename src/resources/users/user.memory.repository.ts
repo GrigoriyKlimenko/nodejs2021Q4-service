@@ -18,6 +18,11 @@ const getById = async (id: string): Promise<IUser | undefined> => {
     const user = await userRepository.findOne(id);
     return user;
 };
+const getByLogin = async (login: string): Promise<IUser | undefined> => {
+    const userRepository = getRepository(UsersModel);
+    const user = await userRepository.findOne({where: {login: login}});
+    return user;
+};
 const addUser = async (user: IUser): Promise<IUser> => {
     const userNew = await getRepository(UsersModel).save(user);
     return userNew;
@@ -30,18 +35,16 @@ const deleteById = async (id: string): Promise<void> => {
     await getRepository(UsersModel).delete(id);
 };
 const addDefaultUser = async (user: IUser): Promise<IUser> => {
-    const userRepository = getRepository(UsersModel);
-    let currentUser = await userRepository.findOne({where: {login: user.login}});
+    let currentUser = await getByLogin(user.login);
     if (!currentUser) {
        currentUser = await getRepository(UsersModel).save(user);
     }
     return currentUser;
 }
 
-const usersRepositoryActions = {getAll, getById, addUser, updateUser, deleteById, addDefaultUser};
+const usersRepositoryActions = {getAll, getById, addUser, updateUser, deleteById, addDefaultUser, getByLogin};
 
 export {
     IUser,
     usersRepositoryActions,
-    addDefaultUser
 };

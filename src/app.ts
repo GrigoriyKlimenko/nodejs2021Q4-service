@@ -1,6 +1,7 @@
 import fastify from 'fastify';
 import logger from './common/logger';
 import usersRouter from './resources/users/user.router';
+import loginRouter from './resources/login/login.router';
 import boardsRouter from './resources/boards/boards.router';
 import tasksRouter from './resources/tasks/tasks.router';
 
@@ -38,10 +39,11 @@ process.on('unhandledRejection', (reason, promise) => {
         process.exit(1);
     }, 500)
 });
+
+app.register(loginRouter);
 app.register(usersRouter);
 app.register(boardsRouter);
 app.register(tasksRouter);
-
 
 // Test debug tipe logging
 logger.debug('Debug message');
