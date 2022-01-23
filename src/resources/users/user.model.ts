@@ -14,7 +14,7 @@ class UsersModel implements IUser{
   @Column('varchar', { length: 255, default: 'Login' })
   login!: string;
 
-  @Column('varchar', { length: 255, default: 'Password', select: false })
+  @Column('varchar', { length: 255, default: 'Password' })
   password!: string;
 
   @OneToMany(() => TasksModel, (task) => task.user, {

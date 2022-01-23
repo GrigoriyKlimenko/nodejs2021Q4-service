@@ -20,7 +20,7 @@ const getById = async (id: string): Promise<IUser | undefined> => {
 };
 const getByLogin = async (login: string): Promise<IUser | undefined> => {
     const userRepository = getRepository(UsersModel);
-    const user = await userRepository.findOne({where: {login: login}});
+    const user = await userRepository.findOne({where: {login}});
     return user;
 };
 const addUser = async (user: IUser): Promise<IUser> => {
