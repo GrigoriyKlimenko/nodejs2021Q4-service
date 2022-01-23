@@ -1,10 +1,10 @@
 import fastify from 'fastify';
 import logger from './common/logger';
+import { authentication } from './common/authentication';
 import usersRouter from './resources/users/user.router';
 import loginRouter from './resources/login/login.router';
 import boardsRouter from './resources/boards/boards.router';
 import tasksRouter from './resources/tasks/tasks.router';
-
 
 const app = fastify({ logger });
 
@@ -20,6 +20,8 @@ app.addHook('preHandler', (req, _res, done) => {
     }
     done()
 })
+
+app.addHook('onRequest', authentication);
 
 app.setErrorHandler((err, _req, res): void => {
     logger.error(err);
