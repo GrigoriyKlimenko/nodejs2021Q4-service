@@ -23,7 +23,7 @@ const loginUser = async (req: UserRequest, res: FastifyReply) => {
     if (!user) {
 
         res.code(403).send(`No such user: ${login}`);
-        
+
     } else {
 
         const isPasswordCorrect = await bcrypt.compare(password, user.password);

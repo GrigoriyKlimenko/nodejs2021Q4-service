@@ -29,10 +29,10 @@ const updateBoard = async (board: IBoard): Promise<IBoard> => {
 const deleteById = async (id: string): Promise<void> => {
     await getRepository(BoardsModel).delete(id);
 };
-const boardsRepositoryActions = {getAll, getById, addBoard, updateBoard, deleteById};
+const boardsRepositoryActions = { getAll, getById, addBoard, updateBoard, deleteById };
 
-export { 
-    boards, 
+export {
+    boards,
     IBoard,
     boardsRepositoryActions
 };

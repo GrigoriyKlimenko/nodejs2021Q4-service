@@ -5,7 +5,7 @@ import logger from '../../common/logger';
 import { IUser, usersRepositoryActions } from './user.memory.repository';
 import { SALT_ROUNDS } from '../../common/config';
 
-type UserRequest = FastifyRequest <{
+type UserRequest = FastifyRequest<{
     Params: {
         userId: string;
     }
@@ -16,6 +16,10 @@ type UserRequest = FastifyRequest <{
     }
 }>
 
+/**
+   * This function add default user
+   * If user not founded - initiate response with 404 status and message
+*/
 const addDefaultUser = async () => {
     const defaultUser = await usersRepositoryActions.addDefaultUser({
         id: v4(),
@@ -26,7 +30,7 @@ const addDefaultUser = async () => {
     if (defaultUser) {
         logger.info(`Default user - admin:admin`);
     } else {
-        throw new Error ('Default user add problem');
+        throw new Error('Default user add problem');
     }
 }
 
@@ -100,7 +104,7 @@ const updateUser = async (req: UserRequest, res: FastifyReply) => {
         login,
         password
     }
-    
+
     const userToResp = await usersRepositoryActions.updateUser(updatedUser);
     res.code(200).send(userToResp);
 };

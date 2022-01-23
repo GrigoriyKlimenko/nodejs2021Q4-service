@@ -19,10 +19,10 @@ const getLogLevel = (level: string) => {
         case '5':
             return 'debug';
         case '6':
-            return 'trace';    
+            return 'trace';
         default:
             return 'info';
-      }
+    }
 }
 
 const transport = pino.transport(<TransportMultiOptions>{
@@ -31,7 +31,7 @@ const transport = pino.transport(<TransportMultiOptions>{
             target: 'pino/file',
             level: 'error',
             options: {
-                destination: './logs/error.txt', 
+                destination: './logs/error.txt',
                 mkdir: true,
                 translateTime: true,
                 ignore: 'pid,hostname',
@@ -41,7 +41,7 @@ const transport = pino.transport(<TransportMultiOptions>{
             target: 'pino/file',
             level: getLogLevel(LOG_LEVEL),
             options: {
-                destination: './logs/all.txt', 
+                destination: './logs/all.txt',
                 mkdir: true,
                 translateTime: true,
                 ignore: 'pid,hostname'
@@ -51,14 +51,14 @@ const transport = pino.transport(<TransportMultiOptions>{
             target: 'pino-pretty',
             level: getLogLevel(LOG_LEVEL),
             options: {
-              colorize: true,
-              translateTime: true,
-              ignore: 'pid,hostname',
+                colorize: true,
+                translateTime: true,
+                ignore: 'pid,hostname',
             },
         }
     ]
 });
 
-const logger: Logger = pino({level: getLogLevel(LOG_LEVEL)}, transport);
+const logger: Logger = pino({ level: getLogLevel(LOG_LEVEL) }, transport);
 
 export default logger;

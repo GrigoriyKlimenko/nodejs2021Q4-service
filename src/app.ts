@@ -25,6 +25,9 @@ app.addHook('onRequest', authentication);
 
 app.setErrorHandler((err, _req, res): void => {
     logger.error(err);
+    if (err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError') {
+        res.status(401).send(err);
+    }
     res.status(err.statusCode || 500).send(err);
 });
 

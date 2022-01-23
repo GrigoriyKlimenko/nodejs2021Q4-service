@@ -12,18 +12,18 @@ import { addDefaultUser } from './resources/users/user.service';
    * @param serverPort - param with listening port for server
 */
 const start = async (serverPort: number | string) => {
-  try {
-    await postgresqlConnect();
-    
-    await app.listen(serverPort, "0.0.0.0",() => {
-      logger.info(`Server is running on http://localhost:${PORT} and log-level: ${LOG_LEVEL}`)
-    })
+    try {
+        await postgresqlConnect();
 
-    await addDefaultUser();
+        await app.listen(serverPort, "0.0.0.0", () => {
+            logger.info(`Server is running on http://localhost:${PORT} and log-level: ${LOG_LEVEL}`)
+        })
 
-  } catch (error) {
-    logger.error(error);
-  }
+        await addDefaultUser();
+
+    } catch (error) {
+        logger.error(error);
+    }
 };
 
 start(PORT);

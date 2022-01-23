@@ -2,17 +2,17 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { v4 } from 'uuid';
 import { tasksRepositoryActions } from './tasks.memory.repository';
 
-type TaskRequest = FastifyRequest <{
+type TaskRequest = FastifyRequest<{
     Params: {
         taskId: string;
         boardId: string
     }
     Body: {
         title: string;
-        order: number; 
+        order: number;
         description: string;
         userId: string | null;
-        boardId: string | null; 
+        boardId: string | null;
         columnId: string | null;
     }
 }>
@@ -56,11 +56,11 @@ const addTask = async (req: TaskRequest, res: FastifyReply) => {
     const { title, order, description, userId, columnId } = req.body;
     const task = {
         id: v4(),
-        title, 
-        order, 
-        description, 
-        userId, 
-        boardId, 
+        title,
+        order,
+        description,
+        userId,
+        boardId,
         columnId
     }
 
@@ -90,14 +90,14 @@ const updateTask = async (req: TaskRequest, res: FastifyReply) => {
     const { title, order, description, userId, boardId, columnId } = req.body;
     const task = {
         id: taskId,
-        title, 
-        order, 
-        description, 
-        userId, 
-        boardId, 
+        title,
+        order,
+        description,
+        userId,
+        boardId,
         columnId
     }
-    
+
     const updatedTask = await tasksRepositoryActions.updateTask(task);
     res.code(200).send(updatedTask);
 };

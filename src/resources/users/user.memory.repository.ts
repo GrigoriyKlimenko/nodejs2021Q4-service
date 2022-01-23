@@ -20,7 +20,7 @@ const getById = async (id: string): Promise<IUser | undefined> => {
 };
 const getByLogin = async (login: string): Promise<IUser | undefined> => {
     const userRepository = getRepository(UsersModel);
-    const user = await userRepository.findOne({where: {login}});
+    const user = await userRepository.findOne({ where: { login } });
     return user;
 };
 const addUser = async (user: IUser): Promise<IUser> => {
@@ -37,12 +37,12 @@ const deleteById = async (id: string): Promise<void> => {
 const addDefaultUser = async (user: IUser): Promise<IUser> => {
     let currentUser = await getByLogin(user.login);
     if (!currentUser) {
-       currentUser = await getRepository(UsersModel).save(user);
+        currentUser = await getRepository(UsersModel).save(user);
     }
     return currentUser;
 }
 
-const usersRepositoryActions = {getAll, getById, addUser, updateUser, deleteById, addDefaultUser, getByLogin};
+const usersRepositoryActions = { getAll, getById, addUser, updateUser, deleteById, addDefaultUser, getByLogin };
 
 export {
     IUser,

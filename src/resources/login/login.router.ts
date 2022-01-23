@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import { IncomingMessage } from 'http'
-import { 
-  loginSchema, 
+import {
+    loginSchema,
 } from './login.model';
 
 /**
@@ -10,9 +10,9 @@ import {
    * @param _option - optional param with options
    * @param done - callback function
 */
-function loginRouter (fastify: FastifyInstance, _option: IncomingMessage, done: () => void) {
-  fastify.post('/login', loginSchema);
-  done();
+function loginRouter(fastify: FastifyInstance, _option: IncomingMessage, done: () => void) {
+    fastify.post('/login', loginSchema);
+    done();
 }
 
 export default loginRouter;

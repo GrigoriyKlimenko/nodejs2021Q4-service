@@ -1,15 +1,15 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { v4 } from 'uuid';
-import { boardsRepositoryActions } from "./boards.memory.repository";
+import { boardsRepositoryActions } from './boards.memory.repository';
 // import { deleteTaskByBoard } from '../tasks/tasks.service';
 
-type BoardRequest = FastifyRequest <{
+type BoardRequest = FastifyRequest<{
     Params: {
         boardId: string;
     }
     Body: {
         id: string;
-        title: string; 
+        title: string;
         columns: [];
     }
 }>
@@ -78,7 +78,7 @@ const deleteBoard = async (req: BoardRequest, res: FastifyReply) => {
    * @param req - request param with boardId and body with other data
    * @param res - param for response
 */
-const updateBoard =async (req: BoardRequest, res: FastifyReply) => {
+const updateBoard = async (req: BoardRequest, res: FastifyReply) => {
     const { boardId } = req.params;
     const { title, columns } = req.body;
     const board = {
@@ -86,7 +86,7 @@ const updateBoard =async (req: BoardRequest, res: FastifyReply) => {
         title,
         columns,
     }
-    
+
     const updatedBoard = await boardsRepositoryActions.updateBoard(board);
     res.code(200).send(updatedBoard);
 };

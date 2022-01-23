@@ -12,11 +12,11 @@ interface ITask {
 }
 
 const getAll = async (boardId: string): Promise<ITask[]> => {
-    const tasks = await getRepository(TasksModel).find({where: {boardId}});
+    const tasks = await getRepository(TasksModel).find({ where: { boardId } });
     return tasks;
 };
 const getById = async (boardId: string, taskId: string): Promise<ITask | undefined> => {
-    const task = await getRepository(TasksModel).findOne({where: {boardId, id: taskId}});
+    const task = await getRepository(TasksModel).findOne({ where: { boardId, id: taskId } });
     return task;
 };
 const addTask = async (task: ITask): Promise<ITask> => {
@@ -28,12 +28,12 @@ const updateTask = async (task: ITask): Promise<ITask> => {
     return updatedTask;
 };
 const deleteById = async (_boardId: string, id: string): Promise<void> => {
-    await getRepository(TasksModel).delete({id});
+    await getRepository(TasksModel).delete({ id });
 };
 
-const tasksRepositoryActions = {getAll, getById, addTask, updateTask, deleteById};
+const tasksRepositoryActions = { getAll, getById, addTask, updateTask, deleteById };
 
-export { 
+export {
     ITask,
-    tasksRepositoryActions 
+    tasksRepositoryActions
 };
