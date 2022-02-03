@@ -2,18 +2,17 @@ version: '3'
 
 services:
   server:
-    image: server-fastify
     build: .
     ports:
       - ${PORT}:${PORT}
-    restart: unless-stopped  
+    restart: always 
     depends_on:
       - postgres
     volumes:
       - logs:/dockerdir/logs
       - ./src:/dockerdir/src
     networks:
-      - my-custom-net  
+      - my-custom-net
 
   postgres:
     build: ./database

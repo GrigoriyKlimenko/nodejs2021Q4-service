@@ -6,10 +6,6 @@ import {
     POSTGRES_PORT,
     POSTGRES_HOST
 } from './config';
-import { UsersModel } from '../resources/users/user.model';
-import { BoardsModel } from '../resources/boards/boards.model';
-import { ColumnsModel } from '../resources/boards/columns.model';
-import { TasksModel } from '../resources/tasks/tasks.model';
 
 const config: ConnectionOptions = {
     type: 'postgres',
@@ -18,7 +14,7 @@ const config: ConnectionOptions = {
     username: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
     database: POSTGRES_DB,
-    entities: [UsersModel, BoardsModel, ColumnsModel, TasksModel],
+    entities: [],
     synchronize: false,
     migrations: ['./src/migrations/**/*.ts'],
     cli: {

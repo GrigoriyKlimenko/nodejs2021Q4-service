@@ -1,6 +1,4 @@
-FROM node:16-alpine
-
-EXPOSE ${PORT}
+FROM node:16-alpine AS builder
 
 WORKDIR /dockerdir
 
@@ -10,4 +8,15 @@ RUN npm install && npm cache clean --force
 
 COPY . .
 
-CMD [ "npm", "start" ]
+RUN npm run build
+
+FROM node:16-alpine
+
+COPY . .
+COPY --from=builder /dockerdir/node_modules ./node_modules
+COPY --from=builder /dockerdir/package*.json ./
+COPY --from=builder /dockerdir/dist ./dist
+
+EXPOSE 4000
+
+CMD [ "npm", "run", "start" ]
