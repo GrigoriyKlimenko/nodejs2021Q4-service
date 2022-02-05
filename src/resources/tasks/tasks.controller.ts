@@ -6,6 +6,7 @@ import {
     Put,
     Param,
     Delete,
+    NotFoundException,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { ITask } from './interfaces/task.interface';
@@ -16,12 +17,23 @@ export class TasksController {
 
     @Get()
     async getAll(@Param('boardId') boardId: string) {
-        return await this.tasksService.getAll(boardId);
+        const foundTasks = await this.tasksService.getAll(boardId)
+        if (foundTasks.length === 0) {
+            throw new NotFoundException();
+        } else {
+            return foundTasks;
+        }
+
     }
 
     @Get(':id')
     async getOne(@Param('boardId') boardId: string, @Param('id') id: string) {
-        return await this.tasksService.getOne(boardId, id);
+        const foundTask = await this.tasksService.getOne(boardId, id);
+        if (foundTask === null) {
+            throw new NotFoundException();
+        } else {
+            return foundTask;
+        }
     }
 
     @Post()
@@ -38,11 +50,22 @@ export class TasksController {
         @Param('id') id: string,
         @Body() taskDto: ITask,
     ) {
-        return await this.tasksService.update(boardId, id, taskDto);
+        const updatedTask = await this.tasksService.update(boardId, id, taskDto);
+        if (updatedTask === null) {
+            throw new NotFoundException();
+        } else {
+            return updatedTask;
+        }
+
     }
 
     @Delete(':id')
     async delete(@Param('boardId') boardId: string, @Param('id') id: string) {
-        return await this.tasksService.delete(boardId, id);
-    }    
+        const deletedTask = await this.tasksService.delete(boardId, id);
+        if (deletedTask === null) {
+            throw new NotFoundException();
+        } else {
+            return deletedTask;
+        }
+    }
 }

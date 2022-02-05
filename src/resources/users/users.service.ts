@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { SALT_ROUNDS } from '../../common/config';
 
 @Injectable()
 export class UsersService {
@@ -11,14 +12,14 @@ export class UsersService {
         @InjectRepository(User)
         private usersRepository: Repository<User>,
     ) { }
-    
+
+    async getAll(): Promise<User[]> {
+        return await this.usersRepository.find();
+    }
+
     async getOne(id: string): Promise<User | null> {
         const user = await this.usersRepository.findOne(id);
         return user ?? null;
-    }
-    
-    async getAll(): Promise<User[]> {
-        return await this.usersRepository.find();
     }
 
     async add(user: IUser): Promise<User | null> {
@@ -29,9 +30,14 @@ export class UsersService {
     }
 
     async update(id: string, user: IUser): Promise<User | null> {
-        const password = await bcrypt.hash(user.password, 10);
-        const userToUpdate = { ...user, password };
-        return await this.usersRepository.save({ ...userToUpdate, id });
+        const foundUser = await this.usersRepository.findOne(id);
+        if (foundUser) {
+            const password = await bcrypt.hash(user.password, SALT_ROUNDS);
+            const userToUpdate = { ...user, password };
+            return await this.usersRepository.save({ ...userToUpdate, id });
+        } else {
+            return null;
+        }
     }
 
     async delete(id: string): Promise<User | null> {

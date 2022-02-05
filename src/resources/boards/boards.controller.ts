@@ -5,7 +5,8 @@ import {
     Body,
     Put,
     Param,
-    Delete
+    Delete,
+    NotFoundException,
 } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { IBoard } from './interfaces/board.interface';
@@ -21,7 +22,12 @@ export class BoardsController {
 
     @Get(':id')
     async getOne(@Param('id') id: string) {
-        return await this.boardsService.getOne(id);
+        const foundBoard = await this.boardsService.getOne(id);
+        if (foundBoard === null) {
+            throw new NotFoundException();
+        } else {
+            return foundBoard;
+        }
     }
 
     @Post()
@@ -31,11 +37,22 @@ export class BoardsController {
 
     @Put(':id')
     async update(@Param('id') id: string, @Body() board: IBoard,) {
-        return await this.boardsService.update(id, board);
+        const updatedBoard = await this.boardsService.update(id, board);
+        if (updatedBoard === null) {
+            throw new NotFoundException();
+        } else {
+            return updatedBoard;
+        }
     }
 
     @Delete(':id')
     async delete(@Param('id') id: string) {
-        return await this.boardsService.delete(id);
+        const boardToDelete = await this.boardsService.delete(id);
+        if (boardToDelete === null) {
+            throw new NotFoundException();
+        } else {
+            return boardToDelete;
+        }
+
     }
 }
