@@ -15,18 +15,18 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async findAll() {
-    return await this.usersService.findAll();
+  async getAll() {
+    return await this.usersService.getAll();
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.usersService.findOne(id);
+  async getOne(@Param('id') id: string) {
+    return await this.usersService.getOne(id);
   }
 
   @Post()
-  async create(@Body() user: IUser) {
-    return await this.usersService.create(user);
+  async add(@Body() user: IUser) {
+    return await this.usersService.add(user);
   }
 
   @Put(':id')
@@ -35,7 +35,7 @@ export class UsersController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return await this.usersService.remove(id);
+  async delete(@Param('id') id: string) {
+    return await this.usersService.delete(id);
   }
 }

@@ -12,16 +12,16 @@ export class UsersService {
         private usersRepository: Repository<User>,
     ) { }
     
-    async findOne(id: string): Promise<User | null> {
+    async getOne(id: string): Promise<User | null> {
         const user = await this.usersRepository.findOne(id);
         return user ?? null;
     }
     
-    async findAll(): Promise<User[]> {
+    async getAll(): Promise<User[]> {
         return await this.usersRepository.find();
     }
 
-    async create(user: IUser): Promise<User | null> {
+    async add(user: IUser): Promise<User | null> {
         const password = await bcrypt.hash(user.password, 10);
         const userWithHash = { ...user, password };
         const createdUser = this.usersRepository.create(userWithHash);
@@ -34,7 +34,7 @@ export class UsersService {
         return await this.usersRepository.save({ ...userToUpdate, id });
     }
 
-    async remove(id: string): Promise<User | null> {
+    async delete(id: string): Promise<User | null> {
         const userToDelete = await this.usersRepository.findOne(id);
         if (userToDelete) {
             await this.usersRepository.delete(id);
