@@ -12,7 +12,8 @@ export class BoardsService {
     ) { }
 
     async getAll(): Promise<Board[]> {
-        return await this.boardsRepository.find();
+        const allBoards = await this.boardsRepository.find();
+        return allBoards;
     }
 
     async getOne(id: string): Promise<Board | null> {
@@ -22,16 +23,18 @@ export class BoardsService {
 
     async add(boardDto: IBoard): Promise<Board> {
         const createdBoard = this.boardsRepository.create(boardDto);
-        return await this.boardsRepository.save(createdBoard);
+        const savedBoard = await this.boardsRepository.save(createdBoard);
+        return savedBoard;
     }
 
     async update(id: string, boardDto: IBoard): Promise<Board | null> {
         const board = await this.boardsRepository.findOne(id);
         if (board) {
-            return await this.boardsRepository.save({ ...boardDto, id });
-        } else {
+            const updatedBoard = await this.boardsRepository.save({ ...boardDto, id });
+            return updatedBoard;
+        } 
             return null;
-        }
+        
     }
 
     async delete(id: string): Promise<Board | null> {
@@ -39,8 +42,8 @@ export class BoardsService {
         if (boardToDelete) {
             await this.boardsRepository.delete(id);
             return boardToDelete;
-        } else {
+        } 
             return null;
-        }
+        
     }
 }

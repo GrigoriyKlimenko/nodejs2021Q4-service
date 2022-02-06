@@ -53,10 +53,16 @@
     "tsdoc/syntax": "error",
     "class-methods-use-this": "off",
     "import/no-cycle": "off",
-    "@typescript-eslint/no-explicit-any": ["error"],
+    "no-unused-vars": "off",
+    "no-useless-constructor": "off",
+    "no-empty-function": "off",
     "lines-between-class-members": "off",
+    "@typescript-eslint/no-explicit-any": ["error"],
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-useless-constructor": ["error"],
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "@typescript-eslint/no-empty-function": ["error"]
   }
 }

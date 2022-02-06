@@ -7,11 +7,14 @@ import {
     Param,
     Delete,
     NotFoundException,
+    UseGuards,
 } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { IBoard } from './interfaces/board.interface';
+import {JwtAuthGuard} from '../auth/jwtAuth.guard';
 
 @Controller('boards')
+@UseGuards(JwtAuthGuard)
 export class BoardsController {
     constructor(private readonly boardsService: BoardsService) { }
 

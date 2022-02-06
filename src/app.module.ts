@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import * as path from 'path';
+import { APP_FILTER } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AllExceptionsFilter } from './common/exceptionsFilters/allExceptions.filter';
-import { APP_FILTER } from '@nestjs/core';
 import { BoardsModule } from './resources/boards/boards.module';
 import { TasksModule } from './resources/tasks/tasks.module';
 import { UsersModule } from './resources/users/users.module';
+import { AuthModule } from './resources/auth/auth.module';
 
 @Module({
   imports: [
@@ -20,17 +20,18 @@ import { UsersModule } from './resources/users/users.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      synchronize: true,
-      // migrationsRun: true,
-      entities: [path.join(__dirname, '/resources/**/*.entity{.ts,.js}')],
-      migrations: [path.join(__dirname, '/migrations/**/*{.ts,.js}')],
+      synchronize: false,
+      migrationsRun: true,
+      entities: ['dist/**/*.entity.{ts,js}'],
+      migrations: ['dist/migrations/**/*{.ts,.js}'],
       cli: {
         migrationsDir: 'src/migrations',
       },
     }),
     UsersModule,
     TasksModule,
-    BoardsModule
+    BoardsModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [

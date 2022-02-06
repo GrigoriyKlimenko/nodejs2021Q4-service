@@ -7,15 +7,19 @@ import {
     Param,
     Delete,
     NotFoundException,
+    UseGuards,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { ITask } from './interfaces/task.interface';
+import {JwtAuthGuard} from '../auth/jwtAuth.guard';
 
 @Controller('/boards/:boardId/tasks')
+@UseGuards(JwtAuthGuard)
 export class TasksController {
     constructor(private readonly tasksService: TasksService) { }
 
     @Get()
+    @UseGuards(JwtAuthGuard)
     async getAll(@Param('boardId') boardId: string) {
         const foundTasks = await this.tasksService.getAll(boardId)
         if (foundTasks.length === 0) {
@@ -27,6 +31,7 @@ export class TasksController {
     }
 
     @Get(':id')
+    @UseGuards(JwtAuthGuard)
     async getOne(@Param('boardId') boardId: string, @Param('id') id: string) {
         const foundTask = await this.tasksService.getOne(boardId, id);
         if (foundTask === null) {
@@ -37,6 +42,7 @@ export class TasksController {
     }
 
     @Post()
+    @UseGuards(JwtAuthGuard)
     add(
         @Param('boardId') boardId: string,
         @Body() taskDto: ITask,
@@ -45,6 +51,7 @@ export class TasksController {
     }
 
     @Put(':id')
+    @UseGuards(JwtAuthGuard)
     async update(
         @Param('boardId') boardId: string,
         @Param('id') id: string,
@@ -60,6 +67,7 @@ export class TasksController {
     }
 
     @Delete(':id')
+    @UseGuards(JwtAuthGuard)
     async delete(@Param('boardId') boardId: string, @Param('id') id: string) {
         const deletedTask = await this.tasksService.delete(boardId, id);
         if (deletedTask === null) {

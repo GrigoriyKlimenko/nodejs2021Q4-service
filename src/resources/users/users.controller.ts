@@ -1,23 +1,27 @@
 import {
-    Controller,
-    Get,
-    Post,
-    Body,
-    Put,
-    Param,
-    Delete,
-    NotFoundException,
- } from '@nestjs/common';
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+  NotFoundException,
+  UseGuards
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { IUser } from './interfaces/user.interface';
+import { JwtAuthGuard } from '../auth/jwtAuth.guard';
 
 @Controller("users")
+@UseGuards(JwtAuthGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Get()
   async getAll() {
-    return await this.usersService.getAll();
+    const allUsers = await this.usersService.getAll();
+    return allUsers;
   }
 
   @Get(':id')
@@ -32,7 +36,8 @@ export class UsersController {
 
   @Post()
   async add(@Body() user: IUser) {
-    return await this.usersService.add(user);
+    const savedUser = await this.usersService.add(user);
+    return savedUser;
   }
 
   @Put(':id')
