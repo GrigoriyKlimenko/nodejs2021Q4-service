@@ -1,6 +1,6 @@
 import * as winston from 'winston';
 import { utilities } from 'nest-winston';
-import { LOG_LEVEL } from './config';
+import { LOG_LEVEL } from '../config';
 
 const getLogLevel = (level: string) => {
     switch (level) {

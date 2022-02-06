@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_FILTER } from '@nestjs/core';
@@ -9,6 +9,7 @@ import { BoardsModule } from './resources/boards/boards.module';
 import { TasksModule } from './resources/tasks/tasks.module';
 import { UsersModule } from './resources/users/users.module';
 import { AuthModule } from './resources/auth/auth.module';
+import { AppLoggerMiddleware } from './common/logger/appLoggerMiddleware';
 
 @Module({
   imports: [
@@ -41,6 +42,15 @@ import { AuthModule } from './resources/auth/auth.module';
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
     },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   scope: Scope.REQUEST,
+    //   useClass: AppLoggerMiddleware,
+    // }
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(AppLoggerMiddleware).forRoutes('*');
+  }
+}

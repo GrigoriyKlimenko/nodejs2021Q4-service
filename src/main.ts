@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { WinstonModule } from 'nest-winston';
 import { AppModule } from './app.module';
-import { getLoggerOptions } from './common/logger';
+import { getLoggerOptions } from './common/logger/logger';
 
 async function server() {
   const PORT = process.env.PORT || 4000;
