@@ -25,8 +25,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
-    const bodyData = JSON.stringify(request.body);
     const queryParams = JSON.stringify(request.query);
+    const bodyData = JSON.stringify(request.body);
     this.logger.error(
       `${httpStatus} ${request.method}: ${request.url} Query params: ${queryParams} Body: ${bodyData}`,
     );
