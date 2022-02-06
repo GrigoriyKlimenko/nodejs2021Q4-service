@@ -11,6 +11,12 @@
 git clone {repository URL}
 ```
 
+## Branch for task 10 - Nestjs
+
+```
+git checkout task10
+```
+
 ## Installing NPM modules
 
 ```
@@ -26,6 +32,26 @@ npm start
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
+
+## Running application with docker
+
+To run app:
+
+```
+docker-compose up
+```
+
+migrations on migrations directory
+
+## Logging levels
+
+level 0: 'error';
+level 1: 'warn';
+level 2: 'info';
+level 3: 'http';
+level 4: 'verbose';
+level 5: 'debug';
+level 6: 'silly'; 
 
 ## Testing
 
