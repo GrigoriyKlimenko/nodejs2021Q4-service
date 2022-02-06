@@ -1,7 +1,7 @@
 import { Injectable, ForbiddenException } from '@nestjs/common';
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from 'bcryptjs'
-import { IUser } from "../users/interfaces/user.interface";
+import {IUserLogin} from "../users/interfaces/user.interface";
 import { UsersService } from "../users/users.service";
 import { User } from "../users/entities/user.entity";
 
@@ -11,7 +11,7 @@ export class AuthService {
     constructor(private userService: UsersService,
         private jwtService: JwtService) { }
 
-    async login(userDto: IUser) {
+    async login(userDto: IUserLogin) {
         const user = await this.validateUser(userDto);
         return this.generateToken(user);
     }
@@ -23,7 +23,7 @@ export class AuthService {
         }
     }
 
-    private async validateUser(userDto: IUser) {
+    private async validateUser(userDto: IUserLogin) {
         const user = await this.userService.getUserByLogin(userDto.login);
         if (!user) {
             throw new ForbiddenException({ message: 'Некорректный логин или пароль' });

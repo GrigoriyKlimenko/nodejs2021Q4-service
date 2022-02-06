@@ -11,10 +11,10 @@
 git clone {repository URL}
 ```
 
-## Branch for task 8 - PostgreSQL & Typeorm
+## Branch for task 10 - Nestjs
 
 ```
-git checkout task8
+git checkout task10
 ```
 
 ## Installing NPM modules
@@ -41,30 +41,17 @@ To run app:
 docker-compose up
 ```
 
-Now config have base default options for first start: generate mutations and run it, run server
-
-## Running mutations 
-
-generate mutations:
-
-```
-npm run migration:generate
-```
-
-run mutations:
-
-```
-npm run migration:run
-```
+migrations on migrations directory
 
 ## Logging levels
 
-level 1: 'fatal';
-level 2: 'error';
-level 3: 'warn';
-level 4: 'info';
+level 0: 'error';
+level 1: 'warn';
+level 2: 'info';
+level 3: 'http';
+level 4: 'verbose';
 level 5: 'debug';
-level 6: 'trace'; 
+level 6: 'silly'; 
 
 ## Testing
 

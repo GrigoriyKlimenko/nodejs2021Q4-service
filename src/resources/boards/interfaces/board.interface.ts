@@ -1,7 +1,13 @@
+import { IsArray, IsString } from 'class-validator';
 import { IColumn } from './column.interface';
 
-export interface IBoard {
-    id: string;
-    title: string;
-    columns: IColumn[];
+export class IBoard {
+    id?: string;
+
+    @IsString()
+    title!: string;
+
+    @IsArray()
+    columns!: IColumn[];
 }
+
